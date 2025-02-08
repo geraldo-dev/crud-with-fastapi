@@ -2,10 +2,16 @@ POST http://127.0.0.1:8000/users/
 content-type: application/json
 
 {
-    "name": "getaldo",
-    "email": "geraldo@gmail.com",
-    "password": "12345"
+    "name": "rodrigo",
+    "email": "rodrigo@gmail.com",
+    "password": "123456"
 }
 
 ###
 GET http://127.0.0.1:8000/users/
+
+###
+GET http://127.0.0.1:8000/users/4
+
+###
+DELETE  http://127.0.0.1:8000/users/3
