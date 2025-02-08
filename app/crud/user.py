@@ -1,3 +1,4 @@
+import re
 from sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate
@@ -28,3 +29,14 @@ def delete_user(db: Session, user_id: int):
         db.commit()
         return True
     return False
+
+
+def update_user(db: Session, user_id: int, update_date: dict):
+    db_user = db.query(User).filter(User.id == user_id).first()
+    if not db_user:
+        return None
+    for key, value in update_date.items():
+        setattr(db_user, key, value)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

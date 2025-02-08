@@ -15,3 +15,13 @@ GET http://127.0.0.1:8000/users/4
 
 ###
 DELETE  http://127.0.0.1:8000/users/3
+
+###
+PUT  http://127.0.0.1:8000/users/1
+content-type: application/json
+
+{
+    "name": "geraldo ferreira",
+    "email": "geraldo@gmail.com",
+    "password": "123456"
+}
