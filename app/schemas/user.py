@@ -15,3 +15,9 @@ class UserResponse(UserBase):
 
     class Config:
         orm_mode = True
+
+
+class UserUpdatePartial(BaseModel):
+    name: str | None = None
+    email: str | None = None
+    password: str | None = None

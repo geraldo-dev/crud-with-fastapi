@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.schemas.user import UserCreate, UserResponse
-from app.crud.user import get_user, get_users, create_user, delete_user, update_user
+from app.schemas.user import UserCreate, UserResponse, UserUpdatePartial
+from app.crud.user import get_user, get_users, create_user, delete_user, update_user_partial
 from app.database import get_db
-
 
 router = APIRouter()
 
@@ -35,8 +34,14 @@ def destroy(user_id: int, db: Session = Depends(get_db)):
 
 
 @router.put('/{user_id}', response_model=UserResponse)
-def update_user_existing(user_id: int, update_date: dict, db: Session = Depends(get_db)):
-    user = update_user(db=db, user_id=user_id, update_date=update_date)
+def update_user_field(user_id: int, update_date: UserUpdatePartial, db: Session = Depends(get_db)):
+
+    user = get_user(db, user_id)
     if not user:
         raise HTTPException(status_code=404, detail='User not found')
-    return user
+
+    update_user = update_user_partial(
+        db, user_id, update_date.dict(exclude_unset=True))
+    if not update_user:
+        raise HTTPException(status_code=400, detail='Update failed')
+    return update_user

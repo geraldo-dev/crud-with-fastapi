@@ -31,12 +31,16 @@ def delete_user(db: Session, user_id: int):
     return False
 
 
-def update_user(db: Session, user_id: int, update_date: dict):
+def update_user_partial(db: Session, user_id: int, update_date: dict):
     db_user = db.query(User).filter(User.id == user_id).first()
     if not db_user:
         return None
+
+    # atualiza apenas campos recebidos
     for key, value in update_date.items():
-        setattr(db_user, key, value)
+        if hasattr(db_user, key):
+            setattr(db_user, key, value)
+
     db.commit()
     db.refresh(db_user)
     return db_user
